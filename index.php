@@ -1,9 +1,11 @@
 <?php
 
+  $result="";
 	if(isset($_POST['submit'])){
 		require 'phpmailer/PHPMailerAutoload.php';
 		$mail = new PHPMailer;
 
+    $mail->isSMTP();
 		$mail->Host='smtp.gmail.com';
 		$mail->Port=587;
 		$mail->SMTPAuth=true;
@@ -12,15 +14,20 @@
 		$mail->Password='narutosar@123';
 
 		$mail->setFrom($_POST['email'],$_POST['name']);
-		$mail->addAddress('naruto.new.2017@gmail.com');
+		$mail->addAddress('sarang13579@gmail.com');
 		$mail->addReplyTo($_POST['email'],$_POST['name']);
 
 		$mail->isHTML(true);
 		$mail->Subject='Form Submission: '.$_POST['subject'];
 		$mail->Body='<h1 align=center>Name :'.$_POST['name'].'<br>Email: '.$_POST['email'].'<br>Message: '.$_POST['msg'].'</h1>';
 
-    
-		
+    if(!$mail->send()){
+      $result="Something went wrong. Please try again.";
+    }
+
+    else{
+      $result="Thanks ".$_POST['name']." for contacting us. We'll get back to you soon!";
+    }
 }
 
 ?>
@@ -45,7 +52,7 @@
       <div class="col-md-4 mt-5 bg-light rounded">
         <h1 class="text-center font-weight-bold text-primary">Contact Us</h1>
         <hr class="bg-light">
-        <h5 class="text-center text-success"></h5>
+        <h5 class="text-center text-success"><?= $result; ?></h5>
         <form action="" method="post" id="form-box" class="p-2">
           <div class="form-group input-group">
             <div class="input-group-prepend">
